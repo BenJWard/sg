@@ -149,7 +149,7 @@ add_library(sequence_graph SHARED
             src/sglib/KmerCompressionIndex.cc
             src/sglib/GraphPartitioner.cc
             src/sglib/logger/OutputLog.cc
-            )
+        )
 
 target_link_libraries(sequence_graph ${DEPENDENCY_LIBS})
 
@@ -182,6 +182,7 @@ install(FILES
             src/sglib/logger/OutputLog.h
             src/sglib/datastores/LinkedReadsDatastore.hpp
             src/sglib/mappers/LinkedReadMapper.hpp
+            src/sglib/readers/StringReader.h
         DESTINATION include
         )
 
@@ -218,6 +219,9 @@ add_executable(map-lr
 add_executable(gfa-extract
         src/gfa-extract.cc)
 
+add_executable(build-dbg
+        src/build-dbg.cc)
+
 target_link_libraries(gfa-dumppath sequence_graph)
 target_link_libraries(gfa-qc sequence_graph)
 target_link_libraries(seq-sorter sequence_graph)
@@ -227,6 +231,7 @@ target_link_libraries(gfa-align sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(phaser sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(map-lr sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(gfa-extract sequence_graph)
+target_link_libraries(build-dbg sequence_graph)
 
 IF(BUILD_TESTING)
     add_executable(runBasicTests tests/sglib/basic_check.cc)
@@ -247,6 +252,7 @@ install(TARGETS
         gfa-align
         phaser
         map-lr
+        build-dbg
         runBasicTests
         RUNTIME DESTINATION bin
         ARCHIVE DESTINATION lib

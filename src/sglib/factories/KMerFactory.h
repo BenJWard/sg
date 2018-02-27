@@ -14,7 +14,7 @@
 class KmerIDX;
 class KMerFactory {
 public:
-    const uint8_t K;
+    const unsigned int K;
     int64_t last_unknown{};
     uint64_t fkmer{};
     uint64_t rkmer{};
@@ -32,7 +32,7 @@ public:
     }
 
 protected:
-    explicit KMerFactory(uint8_t k) : K(k), KMER_FIRSTOFFSET((uint64_t) (K - 1) * 2),
+    explicit KMerFactory(unsigned int k) : K(k), KMER_FIRSTOFFSET((uint64_t) (K - 1) * 2),
                                       KMER_MASK((((uint64_t) 1) << (K * 2)) - 1) {
         for (int i = 0; i < 255; i++) {
             b2f[i] = 4;
