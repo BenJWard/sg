@@ -10,7 +10,7 @@
 #include "Common.h"
 
 struct StringReaderParams{
-    explicit StringReaderParams(const std::vector<std::string> &ings, unsigned int minl=0) : strings(ings), min_length(minl) {}
+    StringReaderParams(const std::vector<std::string> &ings, unsigned int minl=0) : strings(ings), min_length(minl) {}
     const std::vector<std::string> &strings;
     unsigned int min_length = 0;
 
