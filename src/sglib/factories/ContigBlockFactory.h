@@ -196,10 +196,7 @@ public:
     const bool isValid(const Block &b) const {
 
         //  Minimo numero de kmers en el bloque
-        if (b.count < min_kmers_to_call_match) {
-            return false;
-        }
-        return true;
+        return b.count >= min_kmers_to_call_match;
     }
 
     explicit ContigBlockFactory(FilterSetParams params) :

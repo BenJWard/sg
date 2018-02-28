@@ -2,7 +2,10 @@
 // Created by Bernardo Clavijo (EI) on 10/02/2018.
 //
 
+#include <iostream>
+#include <sglib/logger/OutputLog.h>
 #include "LinkedReadsDatastore.hpp"
+
 
 void LinkedReadsDatastore::build_from_fastq(std::string read1_filename, std::string read2_filename,
                                             LinkedReadsFormat format) {

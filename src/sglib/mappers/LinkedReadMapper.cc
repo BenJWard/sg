@@ -190,6 +190,10 @@ void LinkedReadMapper::remove_obsolete_mappings(){
     std::cout << "obsolete mappings removed from "<<nodes<<" nodes, total "<<reads<<" reads."<<std::endl;
 }
 
+LinkedReadMapper::LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore) : sg(_sg),datastore(_datastore){
+    reads_in_node.resize(sg.nodes.size());
+}
+
 //void LinkedReadMapper::remap_reads(std::unordered_set<uint64_t> const & reads_to_remap){
 //    std::cout << "Mapping " << prmReadTypeDesc[readType] << " reads from " << read1filename << " and " << read2filename << std::endl;
 //

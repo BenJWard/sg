@@ -765,13 +765,13 @@ SequenceGraph::SequenceGraph(const std::vector<std::string> &seqs, unsigned int 
             // Can go bwd? leave
             if (current.canExtendBwd()) break;
             do {
-                neighbour = current.extendFwd(k, node, kmerDict);
+                neighbour = current.extendFwd(countK, node, kmerDict);
                 current = neighbour;
             } while (current.canExtendFwd());
         }
         else if (current.canExtendBwd()) {
             do {
-                neighbour = current.extendBwd(k, node, kmerDict);
+                neighbour = current.extendBwd(countK, node, kmerDict);
                 current = neighbour;
             } while (current.canExtendBwd());
         }
@@ -779,12 +779,16 @@ SequenceGraph::SequenceGraph(const std::vector<std::string> &seqs, unsigned int 
         Node t(std::string(node.cbegin(), node.cend()));
         t.make_rc();
         bool isCanonical(t.is_canonical());
-        add_node(isCanonical ? t : std::string(node.cbegin(), node.cend()));
-        isCanonical ? node_neighs.emplace_back(current.rc()):node_neighs.emplace_back(current);
-        }
+        node_neighs.emplace_back(isCanonical ?
+                                 KmerNeighbour(t.sequence,current.pre_post_context) :
+                                 KmerNeighbour(std::string(node.cbegin(),node.cend()), current.pre_post_context)
+        );
+    }
 
     std::unordered_map<std::string, KmerNeighbour>().swap(kmerDict);
     // Create links for the nodes
+    std::unordered_map<KmerNeighbour, std::vector<sgNodeID_t > > tip_to_node;
+    for (std::vector<KmerNeighbour>::iterator node = node_neighs.begin(); node!=node_neighs.end(); ++node){
 
-
+    }
 }

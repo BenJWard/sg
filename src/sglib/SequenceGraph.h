@@ -13,13 +13,13 @@
 #include <set>
 #include <iostream>
 #include <array>
+#include <deque>
 #include <sglib/factories/KMerNeighbourFactory.h>
 #include <sglib/readers/StringReader.h>
 #include <sglib/readers/FileReader.h>
 #include <sglib/SMR.h>
-#include <deque>
+#include <sglib/Types.h>
 
-typedef int64_t sgNodeID_t; //first node is 1; negatives are RC
 
 enum sgNodeStatus_t {sgNodeActive,sgNodeDeleted};
 

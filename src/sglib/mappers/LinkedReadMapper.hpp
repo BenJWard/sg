@@ -7,10 +7,9 @@
 
 #include <map>
 
-#include "sglib/SequenceGraph.h"
+#include <unordered_map>
 #include <sglib/datastores/LinkedReadsDatastore.hpp>
-
-
+class SequenceGraph;
 /**
  * @brief A mapper for linked reads from a LinkedReadsDatastore.
  *
@@ -18,9 +17,7 @@
  */
 class LinkedReadMapper {
 public:
-    LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore) : sg(_sg),datastore(_datastore){
-        reads_in_node.resize(sg.nodes.size());
-    };
+    LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore);;
     void update_graph_index();
     void map_reads(std::unordered_set<uint64_t> const &  reads_to_remap={});
     void map_read(uint64_t readID);

@@ -20,11 +20,11 @@ struct KmerNeighbour {
     KmerNeighbour(std::string kmer, int ctx) : kmer(kmer), pre_post_context(ctx), count(1) {}
 
     const bool operator<(const KmerNeighbour& other) const {
-        return kmer<other.kmer;
+        return (other.kmer.empty() ? false : kmer<other.kmer);
     }
 
     const bool operator>(const KmerNeighbour &other) const {
-        return kmer>other.kmer;
+        return (other.kmer.empty() ? false : kmer>other.kmer);
     }
 
     const bool operator==(const KmerNeighbour &other) const {
@@ -35,8 +35,8 @@ struct KmerNeighbour {
         pre_post_context |= other.pre_post_context;
     }
 
-    KmerNeighbour rc(){
-
+    int contextRC(){
+        return 0;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const KmerNeighbour& kmer) {
@@ -91,9 +91,11 @@ struct KmerNeighbour {
             succCode++;
         }
     }
+
     bool hasFwdNeighbour(int neighbour) const {
         return ( (pre_post_context & 1 << neighbour) != 0);
     }
+
     bool hasBwdNeighbour(int neighbour) const {
         return ( (pre_post_context >> 4 & 1 << neighbour) != 0);
     }
@@ -150,20 +152,20 @@ public:
     // TODO: Adjust for when K is larger than what fits in uint64_t!
     const bool next_element(std::vector<KmerNeighbour> &mers) {
         uint64_t p(0);
-        std::vector<std::string> v;
-        v.emplace_back(
+        mers.emplace_back(
                 currentRecord.seq.substr(0, k),
                 buildCtx('N', currentRecord.seq[0+k+1])
         );
         for(int i = 1; i <= currentRecord.seq.size() - k - 1; ++i)
-            v.emplace_back(
+            mers.emplace_back(
                     currentRecord.seq.substr(i, k),
                     buildCtx(currentRecord.seq[i-1], currentRecord.seq[i+k+1])
             );
-        v.emplace_back(currentRecord.seq.substr(currentRecord.seq.size() - k, k),
+        mers.emplace_back(currentRecord.seq.substr(currentRecord.seq.size() - k, k),
                        buildCtx(currentRecord.seq[currentRecord.seq.size() - k - 1], 'N'));
-        std::copy_if(v.begin(),v.end(), v.begin(), [](const std::string &s) { return s.find('N') == std::string::npos;});
-        std::transform(v.begin(),v.end(), v.begin(), [&](std::string s) { return s < reverse_complement(s) ? s : reverse_complement(s);});
+        std::copy_if(mers.begin(),mers.end(), mers.begin(), [](const KmerNeighbour &s) { return s.kmer.find('N') == std::string::npos;});
+//        std::transform(mers.begin(), mers.end(), mers.begin(), [&](KmerNeighbour s) { return s < reverse_complement(s.kmer)
+//                                                                                             ? s : reverse_complement(s.kmer);});
         return false;
     }
 

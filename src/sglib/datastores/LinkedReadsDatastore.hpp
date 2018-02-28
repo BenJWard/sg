@@ -7,7 +7,8 @@
 
 #include <sglib/PairedReadMapper.h>
 #include <cstddef>
-
+#include <fcntl.h>
+#include <unistd.h>
 typedef uint32_t bsg10xTag;
 enum LinkedReadsFormat {UCDavis,raw,seq};
 unsigned const group_size=30;

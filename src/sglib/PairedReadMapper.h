@@ -6,20 +6,18 @@
 #define SG_PAIREDREADMAPPER_HPP
 
 #include <map>
-
-#include "SequenceGraph.h"
-#include "sglib/factories/KMerIDXFactory.h"
-#include "sglib/readers/FileReader.h"
-#include "sglib/readers/SequenceGraphReader.h"
-#include "SMR.h"
-
-typedef uint32_t prm10xTag_t;
+#include <unordered_map>
+#include <strings.h>
+#include <vector>
+#include <unordered_set>
+#include <ostream>
+#include <sglib/Types.h>
+class SequenceGraph;
 
 struct graphPosition{
     sgNodeID_t node;
     uint32_t pos;
 };
-
 class ReadMapping {
 public:
     ReadMapping(){
@@ -59,12 +57,7 @@ public:
     enum prmReadType {prmPE, prmLMP, prm10x, prmLR};
     const std::vector<std::string> prmReadTypeDesc = {"Paired End", "Long Mate Pair", "10x Linked Reads", "Long Reads"};
 
-    PairedReadMapper(SequenceGraph &_sg) : sg(_sg) {
-        std::cout << " _sg size " << _sg.nodes.size();
-        std::cout << " sg size " << sg.nodes.size();
-        reads_in_node.resize(sg.nodes.size());
-        std::cout << " reads_in_node size; " << reads_in_node.size() << std::endl;
-    };
+    PairedReadMapper(SequenceGraph &_sg);;
     void map_reads(std::string , std::string , PairedReadMapper::prmReadType , uint64_t );
     void map_reads(std::string, uint64_t);
     void remove_obsolete_mappings();

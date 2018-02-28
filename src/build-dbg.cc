@@ -5,9 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <sglib/factories/ContigBlockFactory.h>
-#include <sglib/mappers/LongReadMapper.h>
+#include <sglib/SequenceGraph.h>
 #include "cxxopts.hpp"
 
 
@@ -51,8 +50,7 @@ int main(int argc, char * argv[]) {
     while (std::getline(inputSeqs, line)) {
         seqs.push_back(line);
     }
-
-    SequenceGraph dbg(seqs, 100, 5);
+    SequenceGraph dbg(seqs, 8, 1);
 
     dbg.write_to_gfa(output_prefix+"_dbg.gfa");
 }
