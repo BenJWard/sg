@@ -9,6 +9,7 @@
 #include <limits>
 #include <tuple>
 #include <deque>
+#include <unordered_map>
 #include "sglib/factories/KMerFactory.h"
 struct KMerNeighbourFactoryParams {
     unsigned int k;
@@ -32,6 +33,10 @@ struct KmerNeighbour {
     void merge(const KmerNeighbour &other) {
         count += other.count;
         pre_post_context |= other.pre_post_context;
+    }
+
+    KmerNeighbour rc(){
+
     }
 
     friend std::ostream& operator<<(std::ostream& os, const KmerNeighbour& kmer) {
@@ -61,13 +66,12 @@ struct KmerNeighbour {
 
     bool canExtendFwd() const {
         auto bitcount(pre_post_context >> 4);
-
-        return bitcount == 1;
+        return bitcount == 1 and active;
     }
 
     bool canExtendBwd() const {
         auto bitcount(pre_post_context & 0xf);
-        return bitcount == 1;
+        return bitcount == 1 and active;
     }
 
     int getFwd() const {
@@ -94,16 +98,26 @@ struct KmerNeighbour {
         return ( (pre_post_context >> 4 & 1 << neighbour) != 0);
     }
 
-    bool extendFwd(std::deque<char> &node, const std::unordered_map<std::string, KmerNeighbour> &dict) {
+    KmerNeighbour extendFwd(unsigned int k, std::deque<char> &node, const std::unordered_map<std::string, KmerNeighbour> &dict) {
         node.push_back("ACTG"[getFwd()]);
+        this->active=false;
+        std::string m(node.end()-k, node.end());
+        auto km(dict.find(m));
+        return km->second;
     }
-    bool extendBwd(std::deque<char> &node, const std::unordered_map<std::string, KmerNeighbour> &dict) {
+
+    KmerNeighbour extendBwd(unsigned int k, std::deque<char> &node, const std::unordered_map<std::string, KmerNeighbour> &dict) {
         node.push_front("ACTG"[getBwd()]);
+        this->active=false;
+        std::string m(node.begin(), node.begin() + k);
+        auto km(dict.find(m));
+        return km->second;
     }
 
     std::string kmer = "";
     int pre_post_context = 0;
     uint8_t count = 1;
+    bool active = true;
 };
 
 namespace std {

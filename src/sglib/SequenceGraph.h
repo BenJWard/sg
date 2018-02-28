@@ -55,77 +55,7 @@ public:
     SequenceGraph(){};
 
     // Builds a DBG from a vector of seqs
-    SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov = 1){
-        /*
-         * Get context augmented k-mers from the sequences filtered by min_cov
-         */
-        SMR<KmerNeighbour,
-        kmerNeighbourFactory<FastaRecord>,
-        StringReader<FastaRecord>,
-        FastaRecord, StringReaderParams, KMerNeighbourFactoryParams> kmerNeigh_SMR(StringReaderParams{seqs,1}, {k}, {4*GB, min_cov, 10000, "default"});
-
-        auto kmers = kmerNeigh_SMR.process_from_memory();
-        std::unordered_map<std::string, KmerNeighbour> kmerDict;
-        std::transform(kmers.begin(),kmers.end(), std::inserter(kmerDict, kmerDict.begin()), [](KmerNeighbour &kmn){
-            return std::pair<std::string, KmerNeighbour>(kmn.kmer, kmn);
-        });
-        /*
-         * Cleanup the kmer neighbours if they don't exist
-         */
-        for (auto &km : kmers) {
-            int context(km.pre_post_context);
-            // Have fwd neighs
-            if (km.canExtendFwd()) {
-                std::string kmer(km.kmer.substr(1, km.kmer.size())+'N');
-                for (unsigned succCode = 0; succCode < 4u; ++succCode) {
-                    if (km.hasFwdNeighbour(succCode)) {
-                        kmer.back() = "ACTG"[succCode];
-                        if (kmerDict.find(kmer) == kmerDict.end())
-                            context &= ~(1 << succCode);
-                    }
-                }
-            }
-            // Have bwd neighs
-            if (km.canExtendBwd()) {
-                std::string kmer('N'+km.kmer.substr(0,km.kmer.size()-1));
-                for (unsigned succCode = 0; succCode < 4u; ++succCode) {
-                    if (km.hasBwdNeighbour(succCode)) {
-                        kmer.front() = "ACTG"[succCode];
-                        if (kmerDict.find(kmer) == kmerDict.end())
-                            context &= ~(1 << (succCode + 4u));
-                    }
-                }
-            }
-            km.pre_post_context = context;
-        }
-
-        /*
-         * For each node, if node has just 1 neighbour extend until more than 1.
-         * Remove nodes touched, and add a new node.
-         * Restart from first non-touched.
-         */
-
-        // TODO: Finish the extend fwd, bwd functions for the nodes
-        for (auto &km: kmers) {
-            std::deque<char> node(km.kmer.begin(), km.kmer.end());
-            // If can go fwd
-            bool canContinue(false);
-            if (km.canExtendFwd()) {
-                // Can go bwd? leave
-                if (km.canExtendBwd()) break;
-                do {
-                    canContinue = km.extendFwd(node, kmerDict);
-                } while (canContinue);
-            }
-            else if (km.canExtendBwd()) {
-                do {
-                    canContinue = km.extendBwd(node, kmerDict);
-                } while (canContinue);
-            }
-            // make singleton?
-            add_node(Node(std::string(node.begin(), node.end())));
-        }
-    }
+    SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov = 1);
     //=== I/O functions ===
     void load_from_gfa(std::string filename);
     void write_to_gfa(std::string filename);

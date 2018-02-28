@@ -701,3 +701,90 @@ SequenceGraph::depth_first_search(const sgNodeID_t seed, unsigned int size_limit
     }
     return std::vector<sgNodeID_t>(visited.begin(), visited.end());
 }
+
+SequenceGraph::SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov) {
+    /*
+     * Get context augmented k-mers from the sequences filtered by min_cov
+     */
+
+    uint countK(k-2);
+    // K = k-2 as the kmers are augmented with a bwd and fwd context -> K+bwd+fwd = inputK
+    SMR<KmerNeighbour,
+            kmerNeighbourFactory<FastaRecord>,
+            StringReader<FastaRecord>,
+            FastaRecord, StringReaderParams, KMerNeighbourFactoryParams> kmerNeigh_SMR({seqs,1}, {countK}, {4*GB, min_cov, 10000, "default"});
+
+    std::vector<KmerNeighbour> kmers = kmerNeigh_SMR.process_from_memory();
+    std::unordered_map<std::string, KmerNeighbour> kmerDict;
+    std::transform(kmers.begin(),kmers.end(), std::inserter(kmerDict, kmerDict.begin()), [](KmerNeighbour &kmn){
+        return std::pair<std::string, KmerNeighbour>(kmn.kmer, kmn);
+    });
+    /*
+     * Cleanup the kmer neighbours if they don't exist
+     */
+    for (auto &km : kmers) {
+        int context(km.pre_post_context);
+        // Have fwd neighs
+        if (km.canExtendFwd()) {
+            std::string kmer(km.kmer.substr(1, km.kmer.size())+'N');
+            for (unsigned succCode = 0; succCode < 4u; ++succCode) {
+                if (km.hasFwdNeighbour(succCode)) {
+                    kmer.back() = "ACTG"[succCode];
+                    if (kmerDict.find(kmer) == kmerDict.end())
+                        context &= ~(1 << succCode);
+                }
+            }
+        }
+        // Have bwd neighs
+        if (km.canExtendBwd()) {
+            std::string kmer('N'+km.kmer.substr(0,km.kmer.size()-1));
+            for (unsigned succCode = 0; succCode < 4u; ++succCode) {
+                if (km.hasBwdNeighbour(succCode)) {
+                    kmer.front() = "ACTG"[succCode];
+                    if (kmerDict.find(kmer) == kmerDict.end())
+                        context &= ~(1 << (succCode + 4u));
+                }
+            }
+        }
+        km.pre_post_context = context;
+    }
+
+    /*
+     * For each node, if node has just 1 neighbour extend until more than 1.
+     * Remove nodes touched, and add a new node.
+     * Restart from first non-touched.
+     */
+
+    std::vector<KmerNeighbour> node_neighs;
+    for (auto &km: kmers) {
+        KmerNeighbour &current = km;
+        std::deque<char> node(km.kmer.begin(), km.kmer.end());
+        // If can go fwd
+        KmerNeighbour neighbour;
+        if (current.canExtendFwd()) {
+            // Can go bwd? leave
+            if (current.canExtendBwd()) break;
+            do {
+                neighbour = current.extendFwd(k, node, kmerDict);
+                current = neighbour;
+            } while (current.canExtendFwd());
+        }
+        else if (current.canExtendBwd()) {
+            do {
+                neighbour = current.extendBwd(k, node, kmerDict);
+                current = neighbour;
+            } while (current.canExtendBwd());
+        }
+        // Build node
+        Node t(std::string(node.cbegin(), node.cend()));
+        t.make_rc();
+        bool isCanonical(t.is_canonical());
+        add_node(isCanonical ? t : std::string(node.cbegin(), node.cend()));
+        isCanonical ? node_neighs.emplace_back(current.rc()):node_neighs.emplace_back(current);
+        }
+
+    std::unordered_map<std::string, KmerNeighbour>().swap(kmerDict);
+    // Create links for the nodes
+
+
+}
