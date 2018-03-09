@@ -195,9 +195,12 @@ class LongReadMapper {
     };
     struct WindowBlock {
         WindowBlock(uint32_t s, uint32_t e, int32_t contig, uint32_t count) : start(s), end(e), contig(contig), count(count) {}
+        WindowBlock(uint32_t readStart, uint32_t readEnd, int32_t contig, uint32_t contigStart, uint32_t count) :
+                start(readStart), end(readEnd), contig(contig), contigStart(contigStart), count(count) {}
         uint32_t start = 0;
         uint32_t end = 0;
         int32_t contig = 0;
+        uint32_t contigStart = 0;
         uint32_t count = 1;
         uint32_t count_btw = 1;
     };
@@ -235,15 +238,16 @@ class LongReadMapper {
 
         auto read_sketch_num(kf.getMinSketch(seq, sketch));
 
-        for (auto sk = sketch.begin(); sk != sketch.end(); ++sk){
-            std::unordered_map<uint64_t, std::vector<graphStrandPos>>::const_iterator foundKey(kmer_to_graphposition.find(sk->hash));
+        for (auto sk : sketch) {
+            std::unordered_map<uint64_t, std::vector<graphStrandPos>>::const_iterator foundKey(kmer_to_graphposition.find(
+                    sk.hash));
             if (foundKey == kmer_to_graphposition.end()) {
                 sketch_not_in_index++;
                 continue;
             }
             sketch_in_index++;
-            for (auto match = foundKey->second.begin(); match != foundKey->second.end(); ++match) {
-                matches.emplace_back(match->node*(std::signbit(sk->pos)?-1:1), std::abs(sk->pos), std::abs(match->pos));
+            for (auto match : foundKey->second) {
+                matches.emplace_back(match.node*(std::signbit(sk.pos)?-1:1), std::abs(sk.pos), std::abs(match.pos));
             }
         }
 
@@ -265,9 +269,6 @@ public:
         FastaRecord node;
         while (gnr.next_record(node)) {
             kf.getMinSketch(node.seq, sketch);
-//            std::cout << "Node " << node.name << " sketch ";
-//            std::copy(sketch.cbegin(),sketch.cend(),std::ostream_iterator<MinPosIDX>(std::cout, "; "));
-//            std::cout << std::endl;
             for (const auto &sk : sketch) {
                 kmer_to_graphposition[sk.hash].emplace_back(node.id * (std::signbit(sk.pos)?-1:1), std::abs(sk.pos));
             }
@@ -463,7 +464,6 @@ public:
                 for (curr = prev; curr->readPos < currPos+window_size; ++curr) {
                     nodes[curr->dirContig]++;
                 }
-                for (; prev->readPos < currPos+stepping_size; ++prev);
 
                 std::pair<int32_t , uint32_t > max = *nodes.cbegin();
                 for( const auto &nc:nodes) {
@@ -480,20 +480,22 @@ public:
                 if (!blocks.empty()) blocks.back().count_btw++;
                 if (0 == winner) continue;
                 if (blocks.empty()) {
-                    blocks.emplace_back(currPos, currPos+stepping_size, winner, 1);
+                    blocks.emplace_back(currPos, currPos+stepping_size, winner, prev->offset, 1);
                 }
                 else {
                     if (blocks.back().contig == winner) {
                         blocks.back().end = currPos;
                         blocks.back().count++;
                     } else {
-                        blocks.emplace_back(currPos, currPos+stepping_size, winner, 1);
+                        blocks.emplace_back(currPos, currPos+stepping_size, winner, prev->offset, 1);
                     }
                 }
+
+                for (; prev->readPos < currPos+stepping_size; ++prev);
             }
             for (const auto &b: blocks) {
                 if (b.count > min_windows)
-                    sglib::OutputLog(sglib::INFO, false) << "@BLOCK," << read.name << "," << read.seq.length() << "," << b.start << "," << b.end << "," << b.contig << "," << b.count << "," << b.count_btw << std::endl;
+                    sglib::OutputLog(sglib::INFO, false) << "@BLOCK," << read.name << "," << read.seq.length() << "," << b.start << "," << b.end << "," << b.contigStart << "," << b.contig << "," << b.count << "," << b.count_btw << std::endl;
             }
 
         }
