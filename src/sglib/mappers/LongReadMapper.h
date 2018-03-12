@@ -15,7 +15,7 @@
 #include <sglib/factories/StrandedMinSketchFactory.h>
 
 template <typename A, typename B>
-std::multimap<B, A> flip_map(std::map<A,B> & src) {
+std::multimap<B, A> ranker_map(std::map<A, B> &src) {
 
     std::multimap<B,A> dst;
 
@@ -231,8 +231,6 @@ class LongReadMapper {
         std::vector<MatchOffset> matches;
         uint32_t sketch_not_in_index(0);
         uint32_t sketch_in_index(0);
-        int64_t offset(0);
-        uint64_t p(0);
         StrandedMinimiserSketchFactory kf(k, w);
         std::set<MinPosIDX> sketch;
 
@@ -247,7 +245,7 @@ class LongReadMapper {
             }
             sketch_in_index++;
             for (auto match : foundKey->second) {
-                matches.emplace_back(match.node*(std::signbit(sk.pos)?-1:1), std::abs(sk.pos), std::abs(match.pos));
+                matches.emplace_back(match.node*(std::signbit(sk.pos)?-1:1), std::abs(sk.pos), std::abs(sk.pos) - std::abs(match.pos) );
             }
         }
 
@@ -442,6 +440,7 @@ public:
         StrandedMinimiserSketchFactory kf(k, w);
         std::set<MinPosIDX> sketch;
         FastqRecord read;
+        sglib::OutputLog(sglib::INFO, false) << "@BLOCK," << "qname" << "," << "qlen" << "," << "qstart" << "," << "qend" << "," << "mstart" << "," << "rname" << "," << "rlen" << "," << "winning" << "," << "total" << std::endl;
         while (fastqReader.next_record(read)) {
             auto matches = getMatchOffsets(read.seq);
             std::sort(matches.begin(),matches.end(), MatchOffset::byReadPos());
@@ -470,7 +469,7 @@ public:
                     if (max.second < nc.second) max = nc;
                     sglib::OutputLog(sglib::DEBUG, false) << "@WINDOW," << currPos << "," << currPos+window_size << "," << read.name << "," << nc.first << "," << nc.second << std::endl;
                 }
-                std::multimap<uint32_t , int32_t> reverseTest = flip_map(nodes);
+                std::multimap<uint32_t , int32_t> reverseTest = ranker_map(nodes);
                 for(std::multimap<uint32_t , int32_t>::const_reverse_iterator it = reverseTest.rbegin(); it != reverseTest.rend(); ++it) {
                     sglib::OutputLog(sglib::DEBUG, false) << "\t\t@RANK," << currPos << "," << currPos + window_size << "," << read.name << ","
                               << it->first << "," << it->second << std::endl;
@@ -495,7 +494,7 @@ public:
             }
             for (const auto &b: blocks) {
                 if (b.count > min_windows)
-                    sglib::OutputLog(sglib::INFO, false) << "@BLOCK," << read.name << "," << read.seq.length() << "," << b.start << "," << b.end << "," << b.contigStart << "," << b.contig << "," << b.count << "," << b.count_btw << std::endl;
+                    sglib::OutputLog(sglib::INFO, false) << "@BLOCK," << read.name << "," << read.seq.length() << "," << b.start << "," << b.end << "," << b.contigStart << "," << b.contig << "," << sg.nodes[std::abs(b.contig)].sequence.length() << "," << b.count << "," << b.count_btw << std::endl;
             }
 
         }

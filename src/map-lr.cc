@@ -136,4 +136,6 @@ int main(int argc, char * argv[]) {
     if (1) {
         map_using_sketches(K, sg, output_prefix, long_reads);
     }
+
+    sglib::OutputLog() << "Done!" << std::endl;
 }
