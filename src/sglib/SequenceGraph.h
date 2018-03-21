@@ -19,12 +19,15 @@
 #include <sglib/readers/FileReader.h>
 #include <sglib/SMR.h>
 #include <sglib/Types.h>
+#include <unordered_set>
+#include "sglib/readers/FileReader.h"
 
 
 enum sgNodeStatus_t {sgNodeActive,sgNodeDeleted};
 
 class Node{
 public:
+    Node(std::string _seq, sgNodeStatus_t _st) : sequence(_seq),status(_st){};
     Node(std::string _seq) : sequence(_seq),status(sgNodeActive){};
     std::string sequence;
     sgNodeStatus_t status;
@@ -48,6 +51,22 @@ public:
 
 };
 
+struct nodeVisitor {
+    sgNodeID_t node = 0;
+    unsigned int dist = 0;
+    unsigned int path_length = 0;
+    nodeVisitor(sgNodeID_t n, unsigned int d, unsigned int p) : node(n), dist(d), path_length(p) {}
+    bool operator<(const nodeVisitor &o) const {return std::tie(node) < std::tie(o.node);}
+    bool operator==(const nodeVisitor &o) const {return node == o.node;}
+    nodeVisitor reverseDirection() const {
+        return {-node, dist, path_length};
+    }
+    friend std::ostream &operator<<(std::ostream &os, const nodeVisitor &visitor) {
+        os << visitor.node << ":" << visitor.path_length;
+        return os;
+    }
+};
+
 class SequenceGraphPath;
 class SequenceSubGraph;
 class SequenceGraph {
@@ -58,7 +77,9 @@ public:
     SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov = 1);
     //=== I/O functions ===
     void load_from_gfa(std::string filename);
-    void write_to_gfa(std::string filename);
+    void write_to_gfa(std::string filename,const std::unordered_set<sgNodeID_t> & marked_red={}, const std::vector<double> & depths={}, const std::unordered_set<sgNodeID_t> & selected_nodes={});
+    void write(std::ofstream & output_file);
+    void read(std::ifstream & input_file);
 
 
     //=== graph operations ===
@@ -76,7 +97,7 @@ public:
     // find bubbles in component of graph
     std::vector<std::vector<sgNodeID_t >> find_bubbles(std::vector<sgNodeID_t>);
 
-    std::vector<sgNodeID_t> depth_first_search(sgNodeID_t node, unsigned int size_limit, unsigned int edge_limit, std::set<sgNodeID_t> tabu={});
+    std::vector<nodeVisitor> depth_first_search(nodeVisitor node, unsigned int size_limit, unsigned int edge_limit, std::set<nodeVisitor> tabu={});
 
     std::vector<sgNodeID_t> breath_first_search(std::vector<sgNodeID_t> &nodes, unsigned int size_limit);
 
@@ -91,6 +112,7 @@ public:
     void join_all_unitigs();
     std::vector<SequenceGraphPath> get_all_unitigs(uint16_t min_nodes);
     // simplify --> executes expand_path on every multi-sequence unitig
+    std::vector<SequenceSubGraph> get_all_tribbles();
 
 
     // tip_clip -> eliminates tips.
@@ -105,12 +127,13 @@ public:
 
 
     //=== internal variables ===
-    std::vector<sgNodeID_t> oldnames_to_nodes(std::string _oldnames);
+
     std::vector<Node> nodes;
     std::vector<std::vector<Link>> links;
-    std::unordered_map<std::string,sgNodeID_t> oldnames_to_ids;
-    std::vector<std::string> oldnames;
     std::string filename,fasta_filename;
+    std::vector<sgNodeID_t> oldnames_to_nodes(std::string _oldnames);
+    std::vector<std::string> oldnames;
+    std::unordered_map<std::string,sgNodeID_t> oldnames_to_ids;
 
     void consume_nodes(const SequenceGraphPath &p, const std::set<sgNodeID_t> &pnodes);
 
@@ -127,15 +150,22 @@ public:
 class SequenceGraphPath {
 public:
     std::vector<sgNodeID_t> nodes;
+    SequenceGraphPath (const SequenceGraphPath& other): sg(other.sg),nodes(other.nodes){};
+    SequenceGraphPath& operator=(const SequenceGraphPath& other){nodes=other.nodes;return *this;};
     explicit SequenceGraphPath(SequenceGraph & _sg, const std::vector<sgNodeID_t> _nodes={})  : sg(_sg) ,nodes(_nodes) {};
     std::string get_fasta_header();
     std::string get_sequence();
+    std::vector<Link> get_next_links() { return sg.get_fw_links(nodes.back());}
+    bool extend_if_coherent(SequenceGraphPath s);
     void reverse();
     bool is_canonical();
+    const bool operator< (const SequenceGraphPath & other) const;
+    const bool operator== (const SequenceGraphPath & other) const;
 
 private:
     SequenceGraph& sg;
 };
+
 
 class SequenceSubGraph {
 public:
@@ -143,6 +173,7 @@ public:
     explicit SequenceSubGraph(SequenceGraph & _sg, std::vector<sgNodeID_t> _nodes={})  : sg(_sg) ,nodes(_nodes) {};
     SequenceGraphPath make_path(); //returns empty path if not linear
 
+    void write_to_gfa(std::string filename);
 private:
     SequenceGraph& sg;
 };

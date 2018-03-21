@@ -3,12 +3,14 @@
 //
 #include "gtest/gtest.h"
 #include <sglib/SMR.h>
+#include <sglib/types/KmerTypes.hpp>
 #include <sglib/readers/FileReader.h>
 #include <sglib/readers/SequenceGraphReader.h>
 #include <sglib/factories/KMerIDXFactory.h>
 #include <sglib/SequenceGraph.h>
 
 TEST(basic_check, test_smr_from_fasta){
+    sglib::OutputLogLevel = sglib::DEBUG;
     SMR<KmerIDX,
     kmerIDXFactory<FastaRecord>,
             FastaReader<FastaRecord>,
@@ -20,6 +22,7 @@ TEST(basic_check, test_smr_from_fasta){
 }
 
 TEST(basic_check, test_smr_from_fastq){
+    sglib::OutputLogLevel = sglib::DEBUG;
     SMR<KmerIDX,
             kmerIDXFactory<FastqRecord>,
             FastqReader<FastqRecord>,
@@ -31,6 +34,7 @@ TEST(basic_check, test_smr_from_fastq){
 }
 
 TEST(basic_check, test_smr_from_gfa){
+    sglib::OutputLogLevel = sglib::DEBUG;
     SequenceGraph sg;
     sg.load_from_gfa("../tests/datasets/tgraph.gfa");
     SMR<KmerIDX,

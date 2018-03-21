@@ -39,6 +39,14 @@ execute_process(
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+# Check if the git directory is clean
+execute_process(
+        COMMAND git status -s
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_STATUS
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
 # Fill the version variables in case the compilation isn't done from a git repo
 if("${GIT_ORIGIN_URL}" STREQUAL "")
     add_definitions("-DGIT_ORIGIN_URL=\"not set\"")
@@ -48,7 +56,11 @@ endif()
 if("${GIT_COMMIT_HASH}" STREQUAL "")
     add_definitions("-DGIT_COMMIT_HASH=\"experimental\"")
 else()
-    add_definitions("-DGIT_COMMIT_HASH=\"${GIT_COMMIT_HASH}\"")
+    if("${GIT_STATUS}" STREQUAL "")
+        add_definitions("-DGIT_COMMIT_HASH=\"${GIT_COMMIT_HASH}\"")
+    else()
+        add_definitions("-DGIT_COMMIT_HASH=\"${GIT_COMMIT_HASH} (dirty)\"")
+    endif()
 endif()
 if("${GIT_BRANCH}" STREQUAL "")
     add_definitions("-DGIT_COMMIT_HASH=\"not from git\"")
@@ -127,28 +139,19 @@ add_library(sequence_graph SHARED
             src/sglib/PairedReadMapper.cc
             src/sglib/HaplotypeScorer.cpp
             src/sglib/SequenceGraphJournal.cc
-            src/sglib/SequenceGraph.cc
-            src/sglib/PairedReadMapper.cc
             src/sglib/Scaffolder.cc
-            src/sglib/filesystem/check_or_create_directory.cc
+            src/sglib/filesystem/helpers.cc
             src/sglib/PhaseScaffolder.cpp
             src/sglib/KmerCompressionIndex.cc
             src/sglib/GraphPartitioner.cc
             src/sglib/logger/OutputLog.cc
             src/sglib/datastores/LinkedReadsDatastore.cc
             src/sglib/mappers/LinkedReadMapper.cc
-            src/sglib/SequenceGraph.cc
-            src/sglib/PairedReadMapper.cc
-            src/sglib/HaplotypeScorer.cpp
-            src/sglib/SequenceGraphJournal.cc
-            src/sglib/SequenceGraph.cc
-            src/sglib/PairedReadMapper.cc
-            src/sglib/Scaffolder.cc
-            src/sglib/filesystem/check_or_create_directory.cc
-            src/sglib/PhaseScaffolder.cpp
-            src/sglib/KmerCompressionIndex.cc
-            src/sglib/GraphPartitioner.cc
-            src/sglib/logger/OutputLog.cc
+            src/sglib/processors/Untangler.cc
+            src/sglib/processors/TagWalker.cc
+            src/sglib/processors/FlowFollower.cc
+            src/sglib/WorkSpace.cc
+            src/sglib/datastores/PathsDatastore.cc
         )
 
 target_link_libraries(sequence_graph ${DEPENDENCY_LIBS})
@@ -175,7 +178,7 @@ install(FILES
             src/sglib/PairedReadMapper.hpp
             src/sglib/HaplotypeScorer.hpp
             src/sglib/SequenceGraphJournal.hpp
-            src/sglib/filesystem/check_or_create_directory.h
+            src/sglib/filesystem/helpers.h
             src/sglib/PhaseScaffolder.h
             src/sglib/KmerCompressionIndex.hpp
             src/sglib/GraphPartitioner.hpp
@@ -184,6 +187,26 @@ install(FILES
             src/sglib/mappers/LinkedReadMapper.hpp
             src/sglib/readers/StringReader.h
         DESTINATION include
+        )
+
+add_executable(bsg-datastore
+        src/bsg-datastore.cc
+        )
+
+add_executable(bsg-kmerspectra
+        src/bsg-kmerspectra.cc
+        )
+
+add_executable(bsg-workspace
+        src/bsg-workspace.cc
+        )
+
+add_executable(bsg-untangler
+        src/bsg-untangler.cc
+        )
+
+add_executable(bsg-testflowfollower
+        src/bsg-testflowfollower.cc
         )
 
 ## add executables and respective sources
@@ -214,24 +237,37 @@ add_executable(seq-sorter
                src/seq-sorter.cpp)
 
 add_executable(map-lr
-               src/map-lr.cc)
+        src/map-lr.cc)
 
 add_executable(gfa-extract
         src/gfa-extract.cc)
 
+add_executable(gfa-set
+        src/gfa-set.cc)
+
+add_executable(gfa-indexer
+        src/gfa-indexer.cc)
+
 add_executable(build-dbg
         src/build-dbg.cc)
 
+target_link_libraries(bsg-workspace sequence_graph)
+target_link_libraries(bsg-datastore sequence_graph)
+target_link_libraries(bsg-kmerspectra sequence_graph)
 target_link_libraries(gfa-dumppath sequence_graph)
 target_link_libraries(gfa-qc sequence_graph)
 target_link_libraries(seq-sorter sequence_graph)
 target_link_libraries(gfa-pairscaff sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(gfa-bfphaser sequence_graph ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(bsg-untangler sequence_graph ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(bsg-testflowfollower sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(gfa-align sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(phaser sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(map-lr sequence_graph ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(gfa-extract sequence_graph)
 target_link_libraries(build-dbg sequence_graph)
+target_link_libraries(gfa-set sequence_graph)
+target_link_libraries(gfa-indexer sequence_graph)
 
 IF(BUILD_TESTING)
     add_executable(runBasicTests tests/sglib/basic_check.cc)

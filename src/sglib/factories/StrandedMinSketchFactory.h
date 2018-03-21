@@ -11,22 +11,6 @@
 #include <set>
 #include "KMerFactory.h"
 
-class MinPosIDX {
-public:
-    uint64_t hash = 0;
-    int32_t pos = 0;
-
-    MinPosIDX(uint64_t hash, int32_t pos) : hash(hash), pos(pos) {}
-    bool operator<(const MinPosIDX &o) const {
-        return hash < o.hash;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const MinPosIDX& m) {
-        os << m.hash;
-        return os;
-    }
-};
-
 /**
  * @brief
  * This class generates a stranded minimiser sketch for a DNA sequence, assumes the sequence contains no N's!!
@@ -49,11 +33,13 @@ class StrandedMinimiserSketchFactory : public  KMerFactory {
 
 public:
     explicit StrandedMinimiserSketchFactory(uint8_t k, uint8_t w) : KMerFactory(k), w(w) {}
-    inline void getMinSketch(const std::string &seq, std::set<MinPosIDX> &sketch){
+    inline std::set<MinPosIDX>::size_type getMinSketch(const std::string &seq, std::set<MinPosIDX> &sketch){
         // TODO: Adjust for when K is larger than what fits in uint64_t!
         last_unknown=0;
         fkmer=0;
         rkmer=0;
+        if (seq.length() < K) return sketch.size();
+
         for (unsigned int nt = 0; nt < K; nt++) {
             fillKBuf(seq[nt], fkmer, rkmer, last_unknown);
         }
@@ -80,15 +66,16 @@ public:
                 fillKBuf(seq[pos + j], fkmer, rkmer, last_unknown);
                 if (fkmer < rkmer and min == fkmer) {
                     // Is fwd
-                    sketch.insert(MinPosIDX(hash(min), pos+j));
+                    sketch.emplace(hash(min), pos+j);
                     continue;
                 }
                 if (rkmer < fkmer and min == rkmer) {
                     // Is bwd
-                    sketch.insert(MinPosIDX{hash(min), static_cast<int32_t>(-1*(pos+j))});
+                    sketch.emplace(hash(min), -1*(pos+j));
                 }
             }
         }
+        return sketch.size();
     }
 };
 

@@ -17,7 +17,11 @@ class SequenceGraph;
  */
 class LinkedReadMapper {
 public:
-    LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore);;
+    LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore) : sg(_sg),datastore(_datastore){
+        reads_in_node.resize(sg.nodes.size());
+    };
+    void write(std::ofstream & output_file);
+    void read(std::ifstream & input_file);
     void update_graph_index();
     void map_reads(std::unordered_set<uint64_t> const &  reads_to_remap={});
     void map_read(uint64_t readID);
@@ -27,6 +31,7 @@ public:
     void save_to_disk(std::string filename);
     void load_from_disk(std::string filename);*/
     void print_stats(){};
+    std::unordered_set<bsg10xTag> get_node_tags(sgNodeID_t n);
 
     SequenceGraph & sg;
     LinkedReadsDatastore &datastore;

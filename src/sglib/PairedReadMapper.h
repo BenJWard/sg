@@ -12,7 +12,15 @@
 #include <unordered_set>
 #include <ostream>
 #include <sglib/Types.h>
-class SequenceGraph;
+#include <sglib/types/KmerTypes.hpp>
+
+#include "SequenceGraph.h"
+#include "sglib/factories/KMerIDXFactory.h"
+#include "sglib/readers/FileReader.h"
+#include "sglib/readers/SequenceGraphReader.h"
+#include "SMR.h"
+
+typedef uint32_t prm10xTag_t;
 
 struct graphPosition{
     sgNodeID_t node;
@@ -57,7 +65,12 @@ public:
     enum prmReadType {prmPE, prmLMP, prm10x, prmLR};
     const std::vector<std::string> prmReadTypeDesc = {"Paired End", "Long Mate Pair", "10x Linked Reads", "Long Reads"};
 
-    PairedReadMapper(SequenceGraph &_sg);;
+    PairedReadMapper(SequenceGraph &_sg) : sg(_sg) {
+        std::cout << " _sg size " << _sg.nodes.size();
+        std::cout << " sg size " << sg.nodes.size();
+        reads_in_node.resize(sg.nodes.size());
+        std::cout << " reads_in_node size; " << reads_in_node.size() << std::endl;
+    };
     void map_reads(std::string , std::string , PairedReadMapper::prmReadType , uint64_t );
     void map_reads(std::string, uint64_t);
     void remove_obsolete_mappings();
