@@ -863,9 +863,6 @@ void SequenceSubGraph::write_to_gfa(std::string filename) {
     }
 }
 
-    return std::vector<sgNodeID_t>(visited.begin(), visited.end());
-}
-
 SequenceGraph::SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov) {
     /*
      * Get context augmented k-mers from the sequences filtered by min_cov

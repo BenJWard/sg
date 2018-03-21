@@ -9,8 +9,8 @@
 
 struct KmerIDX {
 
-    KmerIDX() : kmer(std::numeric_limits<unsigned long long int>::max()), contigID(0), count(0){}
-    explicit KmerIDX(uint64_t kmer) : kmer(kmer), contigID(0), count(0) {}
+    KmerIDX() = default;
+    explicit KmerIDX(uint64_t kmer) : kmer(kmer) {}
 
     KmerIDX(uint64_t _kmer, int32_t _contigID, uint32_t pos, uint8_t _count) : kmer(_kmer), contigID(_contigID),
                                                                                pos(pos), count(_count) {}
@@ -27,7 +27,12 @@ struct KmerIDX {
         return kmer==other.kmer;
     }
     void merge(const KmerIDX &other) {
-        count += other.count;
+        uint8_t tot(0);
+        if (__builtin_add_overflow(count, other.count, &tot)) {
+            count = std::numeric_limits<uint8_t>::max();
+        } else {
+            count = tot;
+        }
     }
 
     KmerIDX max() {
@@ -51,10 +56,10 @@ struct KmerIDX {
         }
     };
 
-    uint64_t kmer;
-    int32_t contigID;
-    uint32_t pos;
-    uint8_t count;
+    uint64_t kmer = std::numeric_limits<unsigned long long int>::max();
+    int32_t contigID = 0;
+    uint32_t pos = 0;
+    uint8_t count = 0;
 };
 
 namespace std {

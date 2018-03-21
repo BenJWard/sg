@@ -251,6 +251,3 @@ std::unordered_set<bsg10xTag> LinkedReadMapper::get_node_tags(sgNodeID_t n) {
     if (tags.count(0)>0) tags.erase(0);
     return tags;
 }
-LinkedReadMapper::LinkedReadMapper(SequenceGraph &_sg, LinkedReadsDatastore &_datastore) : sg(_sg),datastore(_datastore){
-    reads_in_node.resize(sg.nodes.size());
-}

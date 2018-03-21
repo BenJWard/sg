@@ -71,8 +71,7 @@ class SequenceGraphPath;
 class SequenceSubGraph;
 class SequenceGraph {
 public:
-    SequenceGraph(){};
-
+    SequenceGraph() = default;
     // Builds a DBG from a vector of seqs
     SequenceGraph(const std::vector<std::string> &seqs, unsigned int k, unsigned int min_cov = 1);
     //=== I/O functions ===

@@ -22,10 +22,6 @@
 
 typedef uint32_t prm10xTag_t;
 
-struct graphPosition{
-    sgNodeID_t node;
-    uint32_t pos;
-};
 class ReadMapping {
 public:
     ReadMapping(){

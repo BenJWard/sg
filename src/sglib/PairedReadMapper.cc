@@ -565,11 +565,3 @@ void PairedReadMapper::load_from_disk(std::string filename) {
     }
 
 }
-
-PairedReadMapper::PairedReadMapper(SequenceGraph &_sg) : sg(_sg) {
-    std::cout << " _sg size " << _sg.nodes.size();
-    std::cout << " sg size " << sg.nodes.size();
-    reads_in_node.resize(sg.nodes.size());
-    std::cout << " reads_in_node size; " << reads_in_node.size() << std::endl;
-}
-
