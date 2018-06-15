@@ -214,6 +214,68 @@ LinkageDiGraph LinkageUntangler::make_paired_linkage(int min_reads) {
     return ldg;
 }
 
+std::unordered_map<unsigned int, unsigned int> LinkageUntangler::getValidTags() {
+    char c2b[256] {4};c2b['a'] = c2b['A'] = 0;c2b['c'] = c2b['C'] = 1;c2b['g'] = c2b['G'] = 2;c2b['t'] = c2b['T'] = 3;
+    std::unordered_map<unsigned int, unsigned int> validTags;
+    std::ifstream infile;
+    infile.open("barcodes/4M-with-alts-february-2016.txt");
+    std::string tagString;
+    unsigned int lineNum(0);
+    while (!infile.eof()){
+        unsigned int tag(0);
+        getline(infile, tagString);
+        for (char c:tagString){
+            tag <<= 2;
+            tag |= c2b[c];
+        }
+        validTags[tag] = lineNum;
+        lineNum++;
+    }
+    return validTags;
+}
+
+void LinkageUntangler::assign_tags_to_nodes(std::vector<std::vector<bsg10xTag>> &node_tags, std::unordered_map<unsigned int, unsigned int> &valid_tags) {
+    unsigned int total_correct_tags(0), total_seen_tags(0);
+    for (auto n=1;n<ws.sg.nodes.size();++n) {
+        if (!selected_nodes[n]) continue;
+        auto nts=ws.linked_read_mappers[0].get_node_tags(n);
+        node_tags[n].reserve(nts.size());
+        unsigned int correct_tags(0);
+        for (auto t:nts) {
+            if (valid_tags.find(t) != valid_tags.cend()) {
+                node_tags[n].push_back(t);
+                correct_tags++;
+            }
+        }
+        total_correct_tags += nts.size();
+        total_correct_tags += correct_tags;
+    }
+    sglib::OutputLog() << "Total correct tags " << total_correct_tags << " / " << total_seen_tags << " Total seen tags" << std::endl;
+}
+
+void
+LinkageUntangler::create_tag_buckets(std::vector<std::vector<bsg10xTag>> &node_tags, std::vector<uint64_t> &node_hash,
+                                     std::unordered_map<unsigned int, unsigned int> &valid_tags) {
+    // (Number of tags) 4792320 / 64bit = 74880 Tags per bit
+    // TODO: Check if we can get away with less bits per tag or more levels are needed
+    unsigned int total_num_tags(4792320); // This comes from the 10x valid tags file
+
+    // For each node, set the bits with present tags
+#pragma omp parallel for
+    for (unsigned int n = 1; n < node_tags.size(); n++){
+        uint64_t node_hash_bits(0);
+        for (const auto &t:node_tags[n]){
+            node_hash_bits |= 1 << (64 * (total_num_tags/valid_tags[t]));
+        }
+        node_hash[n] = node_hash_bits;
+    }
+}
+
+bool LinkageUntangler::share_tags(const std::vector<uint64_t> &node_hash, const sgNodeID_t &n, const sgNodeID_t &m) {
+    bool share(false);
+    share = 0 != (node_hash[n] & node_hash[m]);
+    return share;
+}
 
 LinkageDiGraph LinkageUntangler::make_tag_linkage(int min_reads, float end_perc) {
 
@@ -223,14 +285,19 @@ LinkageDiGraph LinkageUntangler::make_tag_linkage(int min_reads, float end_perc)
     //First, make a node->tag collection for all selected nodes (to speed up things)
     sglib::OutputLog()<<"Creating node_tags sets"<<std::endl;
     std::vector<std::vector<bsg10xTag>> node_tags;
+    std::vector<uint64_t> node_hash;
     std::atomic<uint64_t> all_compared(0),linked(0);
     node_tags.resize(ws.sg.nodes.size());
-    for (auto n=1;n<ws.sg.nodes.size();++n) {
-        if (!selected_nodes[n]) continue;
-        auto nts=ws.linked_read_mappers[0].get_node_tags(n);
-        node_tags[n].reserve(nts.size());
-        for (auto t:nts) node_tags[n].push_back(t);
-    }
+    node_hash.resize(ws.sg.nodes.size());
+
+    std::unordered_map<unsigned int, unsigned int> valid_tags = getValidTags();
+    // Assign tags to nodes
+    assign_tags_to_nodes(node_tags, valid_tags);
+
+    // Create a tag-bucket structure for collision speedup
+    // TODO: If tag-bucket alone is not enough speedup (create a tag_bucket_count structure)
+    create_tag_buckets(node_tags, node_hash, valid_tags);
+
     //Now find the nodes with more than min_tags shared tags
     sglib::OutputLog()<<"Finding intersecting nodes"<<std::endl;
 #pragma omp parallel
@@ -242,6 +309,7 @@ LinkageDiGraph LinkageUntangler::make_tag_linkage(int min_reads, float end_perc)
             if (!selected_nodes[n]) continue;
             for (sgNodeID_t m = n+1; m < ws.sg.nodes.size(); ++m) {
                 if (!selected_nodes[m]) continue;
+                if (!share_tags(node_hash, n, m)) continue;
                 if (node_tags[n].size()<min_reads or node_tags[m].size()<min_reads) continue;
                 size_t shared=intersection_size_fast(node_tags[n],node_tags[m]);
 

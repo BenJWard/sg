@@ -10,6 +10,11 @@
 #include <sglib/LinkageDiGraph.hpp>
 
 class LinkageUntangler {
+    std::unordered_map<unsigned int, unsigned int> getValidTags();
+    bool share_tags(const std::vector<uint64_t> &node_hash, const sgNodeID_t &n, const sgNodeID_t &m);
+    void create_tag_buckets(std::vector<std::vector<bsg10xTag>> &node_tags, std::vector<uint64_t> &node_hash,
+                                std::unordered_map<unsigned int, unsigned int> &valid_tags);
+    void assign_tags_to_nodes(std::vector<std::vector<bsg10xTag>> &node_tags, std::unordered_map<unsigned int, unsigned int> &valid_tags);
 public:
 
     explicit LinkageUntangler(WorkSpace & _ws): ws(_ws) { clear_node_selection();};
