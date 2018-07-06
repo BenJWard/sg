@@ -1,0 +1,4 @@
+<map id="Scaffolder::pop_unsupported_shortbubbles" name="Scaffolder::pop_unsupported_shortbubbles">
+<area shape="rect" id="node2" href="$class_sequence_graph.html#a524c7fb72c64c1eb7c25a1cb73114193" title="SequenceGraph::remove_node" alt="" coords="243,12,445,39"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#acac1222c858f89db10b05f2706cc1757" title="SequenceGraph::remove_link" alt="" coords="494,12,687,39"/>
+</map>

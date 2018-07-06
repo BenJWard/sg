@@ -1,0 +1,12 @@
+<map id="MappingThreader" name="MappingThreader">
+<area shape="rect" id="node2" href="$class_node_mapper.html" title="NodeMapper" alt="" coords="1408,253,1504,280"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html" title="Class representing sequence graphs. " alt="" coords="1129,456,1244,483"/>
+<area shape="rect" id="node5" href="$structgraph_position.html" title="graphPosition" alt="" coords="392,481,493,508"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="374,135,511,177"/>
+<area shape="rect" id="node13" title="STL class. " alt="" coords="385,417,501,444"/>
+<area shape="rect" id="node10" href="$class_node.html" title="Node" alt="" coords="416,615,469,641"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="184,577,264,604"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="6,570,133,611"/>
+<area shape="rect" id="node19" href="$classunique_kmer_index.html" title="uniqueKmerIndex" alt="" coords="1125,188,1248,215"/>
+<area shape="rect" id="node21" href="$structgraph_strand_pos.html" title="graphStrandPos" alt="" coords="385,7,500,33"/>
+</map>

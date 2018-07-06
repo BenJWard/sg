@@ -1,0 +1,11 @@
+<map id="MappingThread" name="MappingThread">
+<area shape="rect" id="node2" href="$class_sequence_graph_path.html" title="SequenceGraphPath" alt="" coords="1417,437,1559,464"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html" title="Class representing sequence graphs. " alt="" coords="1141,267,1256,293"/>
+<area shape="rect" id="node5" href="$structgraph_position.html" title="graphPosition" alt="" coords="392,112,493,139"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="374,333,511,374"/>
+<area shape="rect" id="node13" title="STL class. " alt="" coords="385,399,501,425"/>
+<area shape="rect" id="node10" href="$class_node.html" title="Node" alt="" coords="416,61,469,88"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="184,129,264,156"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="6,122,133,163"/>
+<area shape="rect" id="node19" href="$class_node_mapping.html" title="NodeMapping" alt="" coords="391,533,494,560"/>
+</map>

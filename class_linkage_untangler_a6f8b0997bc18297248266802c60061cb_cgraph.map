@@ -1,0 +1,8 @@
+<map id="LinkageUntangler::expand_linear_regions" name="LinkageUntangler::expand_linear_regions">
+<area shape="rect" id="node2" href="$class_sequence_graph.html#a957062feffff6dcc5efdd252069178ad" title="SequenceGraph::find\l_all_paths_between" alt="" coords="240,5,384,46"/>
+<area shape="rect" id="node4" href="$class_kmer_map_creator.html#af0bc0024556f07e8817422aa06611271" title="KmerMapCreator::create\l_all_kmers" alt="" coords="229,70,395,111"/>
+<area shape="rect" id="node5" href="$class_kmer_map_counter.html#a661273ab263bfb42183852f12b93e36a" title="KmerMapCounter::count\l_all_kmers" alt="" coords="230,135,394,177"/>
+<area shape="rect" id="node6" href="$class_kmer_vector_creator.html#acb4bec191e2675bcfa44e1daa84e0bb8" title="KmerVectorCreator::\lcount_all_kmers" alt="" coords="241,201,383,242"/>
+<area shape="rect" id="node7" href="$class_graph_editor.html#a090aa4c85417aba24d0a2ce7837c4d4a" title="GraphEditor::detach_path" alt="" coords="227,267,397,293"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#acd689762f765b68d335cfb841135ca9d" title="SequenceGraph::get\l_fw_links" alt="" coords="445,133,587,174"/>
+</map>

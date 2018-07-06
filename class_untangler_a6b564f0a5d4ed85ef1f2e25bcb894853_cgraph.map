@@ -1,0 +1,4 @@
+<map id="Untangler::all_nodes_consumed" name="Untangler::all_nodes_consumed">
+<area shape="rect" id="node2" href="$class_sequence_graph.html#acd689762f765b68d335cfb841135ca9d" title="SequenceGraph::get\l_fw_links" alt="" coords="384,5,525,46"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#a8429832b3d8f54b51dc42e444f7e6191" title="SequenceGraph::get\l_bw_links" alt="" coords="195,34,336,75"/>
+</map>

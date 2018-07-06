@@ -1,0 +1,4 @@
+<map id="SMR::dumpBatch" name="SMR::dumpBatch">
+<area shape="rect" id="node2" href="$class_s_m_r.html#aed02dd915c8a1f462033028988c3d158" title="Loops over the records on myFileReader and generates a vector&lt;RecordType&gt; which is then appended to t..." alt="" coords="181,5,384,32"/>
+<area shape="rect" id="node3" href="$class_s_m_r.html#a7ae9ec11fce7758806e34d7872c0aabb" title="Transforms the input file into a filtered RecordType vector using maxMem and merging subsets once eve..." alt="" coords="433,5,575,32"/>
+</map>

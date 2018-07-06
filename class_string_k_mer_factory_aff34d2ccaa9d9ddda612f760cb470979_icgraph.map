@@ -1,0 +1,9 @@
+<map id="StringKMerFactory::create_kmers" name="StringKMerFactory::create_kmers">
+<area shape="rect" id="node2" href="$class_flow_follower.html#a13192e780d6fdb3db600229312560f12" title="does the same as get_distinctive_kmers, but truncates the nodes&#39; sequences on the last shared k&#45;mer t..." alt="" coords="193,5,383,46"/>
+<area shape="rect" id="node3" href="$class_untangler.html#a89273e74b00b26fc5d18c26340fc1225" title="solves a single bubbly path, returns the paths for the 2 new nodes or empty paths if unsolved can ret..." alt="" coords="207,70,369,111"/>
+<area shape="rect" id="node5" href="$class_untangler.html#a9d2be737b7d2e7842492785b9abb453a" title="Untangler::connect\l_neighbours_paths_to_same" alt="" coords="194,135,382,177"/>
+<area shape="rect" id="node7" href="$class_untangler.html#af5d8511828f1d9f6c494253df8c67c9b" title="Untangler::get_all\l_tag_covered_paths" alt="" coords="219,201,357,242"/>
+<area shape="rect" id="node4" href="$class_untangler.html#ae2506fd72b64a11eb91413ef29054a3d" title="Untangler::solve_bubbly\l_paths" alt="" coords="445,70,608,111"/>
+<area shape="rect" id="node6" href="$class_untangler.html#a2ab55e3bd04984f756af0f77cc9ac2c3" title="Untangler::connect\l_neighbours" alt="" coords="461,135,593,177"/>
+<area shape="rect" id="node8" href="$class_untangler.html#a23b9f64ad4194c8740333ab7891c043c" title="grabs all &quot;long&quot; haplotype&#45;specific nodes, uses tags to find neighbours, uses imbalance to impute dir..." alt="" coords="432,201,621,242"/>
+</map>

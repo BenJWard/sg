@@ -1,0 +1,10 @@
+<map id="Untangler::extend_HSPNPs_by_tagwalking" name="Untangler::extend_HSPNPs_by_tagwalking">
+<area shape="rect" id="node2" href="$class_untangler.html#a1f1c5db1f0e2d5f1aacdc040328570d2" title="Untangler::get_all\l_HSPNPs" alt="" coords="491,5,615,46"/>
+<area shape="rect" id="node4" href="$class_untangler.html#a7e753ec445e5d8e0c99e4fc5d9df2722" title="finds a common source and a common sink, so the paths run parallel through a region ..." alt="" coords="245,59,411,101"/>
+<area shape="rect" id="node5" href="$class_untangler.html#a6b564f0a5d4ed85ef1f2e25bcb894853" title="validates that a parallel path set uses all nodes between the common source and sink ..." alt="" coords="257,125,399,166"/>
+<area shape="rect" id="node7" href="$class_sequence_graph.html#ad7f54e2a8e0a2e74ee21af581ce82c84" title="SequenceGraph::join_path" alt="" coords="241,191,415,217"/>
+<area shape="rect" id="node9" href="$class_sequence_graph.html#a84b8d6ab28c22c20a468b1743796d4b0" title="SequenceGraph::create\l_index" alt="" coords="249,242,407,283"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#acd689762f765b68d335cfb841135ca9d" title="SequenceGraph::get\l_fw_links" alt="" coords="691,95,832,137"/>
+<area shape="rect" id="node6" href="$class_sequence_graph.html#a8429832b3d8f54b51dc42e444f7e6191" title="SequenceGraph::get\l_bw_links" alt="" coords="483,125,624,166"/>
+<area shape="rect" id="node8" href="$class_sequence_graph.html#a6e6d7862335a9d36a0002711b5a95db4" title="SequenceGraph::add_node" alt="" coords="464,241,643,268"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Untangler::connect_neighbours" name="Untangler::connect_neighbours">
+<area shape="rect" id="node2" href="$class_untangler.html#afd3182e869342c4d435a46bb62b243cd" title="grabs all &quot;long&quot; haplotype&#45;specific nodes, uses tags to find neighbours. " alt="" coords="215,5,347,46"/>
+<area shape="rect" id="node3" href="$class_untangler.html#a9d2be737b7d2e7842492785b9abb453a" title="Untangler::connect\l_neighbours_paths_to_same" alt="" coords="187,70,375,111"/>
+<area shape="rect" id="node4" href="$class_string_k_mer_factory.html#aff34d2ccaa9d9ddda612f760cb470979" title="StringKMerFactory::\lcreate_kmers" alt="" coords="424,70,563,111"/>
+</map>

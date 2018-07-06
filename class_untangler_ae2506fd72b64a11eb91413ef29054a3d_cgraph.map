@@ -1,0 +1,4 @@
+<map id="Untangler::solve_bubbly_paths" name="Untangler::solve_bubbly_paths">
+<area shape="rect" id="node2" href="$class_untangler.html#a89273e74b00b26fc5d18c26340fc1225" title="solves a single bubbly path, returns the paths for the 2 new nodes or empty paths if unsolved can ret..." alt="" coords="216,5,379,46"/>
+<area shape="rect" id="node3" href="$class_string_k_mer_factory.html#aff34d2ccaa9d9ddda612f760cb470979" title="StringKMerFactory::\lcreate_kmers" alt="" coords="427,5,565,46"/>
+</map>

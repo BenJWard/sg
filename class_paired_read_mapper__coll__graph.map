@@ -1,0 +1,10 @@
+<map id="PairedReadMapper" name="PairedReadMapper">
+<area shape="rect" id="node2" href="$class_sequence_graph.html" title="Class representing sequence graphs. " alt="" coords="1169,327,1284,353"/>
+<area shape="rect" id="node4" href="$structgraph_position.html" title="graphPosition" alt="" coords="392,332,493,359"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="374,254,511,295"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="385,509,501,536"/>
+<area shape="rect" id="node9" href="$class_node.html" title="Node" alt="" coords="416,185,469,212"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="184,124,264,151"/>
+<area shape="rect" id="node16" href="$class_paired_reads_datastore.html" title="PairedReadsDatastore" alt="" coords="541,21,696,48"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="6,117,133,158"/>
+</map>

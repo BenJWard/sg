@@ -1,0 +1,6 @@
+<map id="SMR::read_from_file" name="SMR::read_from_file">
+<area shape="rect" id="node2" href="$class_s_m_r.html#aed02dd915c8a1f462033028988c3d158" title="Loops over the records on myFileReader and generates a vector&lt;RecordType&gt; which is then appended to t..." alt="" coords="197,5,400,32"/>
+<area shape="rect" id="node5" href="$class_s_m_r.html#ab5285c13cb7fde71b989ceca82457565" title="Does a final merge of all thread&#39;s data and returns a collapsed vector along with writing the results..." alt="" coords="235,56,362,83"/>
+<area shape="rect" id="node3" href="$class_s_m_r.html#a401a36dc4d2eee116541c457495fa863" title="Collapses the _elements and writes the collapsed elements to the currentBatch file. " alt="" coords="449,5,575,32"/>
+<area shape="rect" id="node4" href="$class_s_m_r.html#a1bab388022206e5787ae709358bcb2ce" title="Sorts the _elements and then performs an inplace collapse of all equal elements using the merge funct..." alt="" coords="625,5,733,32"/>
+</map>

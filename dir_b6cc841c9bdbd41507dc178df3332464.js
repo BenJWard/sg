@@ -1,0 +1,28 @@
+var dir_b6cc841c9bdbd41507dc178df3332464 =
+[
+    [ "aligners", "dir_7d8af406a5b70861f214ab13c293d420.html", "dir_7d8af406a5b70861f214ab13c293d420" ],
+    [ "datastores", "dir_1968b00e83f3daff89b1890797bc4184.html", "dir_1968b00e83f3daff89b1890797bc4184" ],
+    [ "factories", "dir_f19e5ad8bdaccda65673285dfcbfed5c.html", "dir_f19e5ad8bdaccda65673285dfcbfed5c" ],
+    [ "filesystem", "dir_7369ac4a83b19e756480c9efaf12992f.html", "dir_7369ac4a83b19e756480c9efaf12992f" ],
+    [ "graph", "dir_92ead169dbe390a0022e8eed7888133b.html", "dir_92ead169dbe390a0022e8eed7888133b" ],
+    [ "indexers", "dir_e1229c24cd371f6572af4d62c1f8cbed.html", "dir_e1229c24cd371f6572af4d62c1f8cbed" ],
+    [ "logger", "dir_065b3e6d1e78940113135c204516bdea.html", "dir_065b3e6d1e78940113135c204516bdea" ],
+    [ "mappers", "dir_9f0f53058acee08f26c5425811f40ad1.html", "dir_9f0f53058acee08f26c5425811f40ad1" ],
+    [ "processors", "dir_490085ae1b7a5eb44a4d1c80fc8d1b97.html", "dir_490085ae1b7a5eb44a4d1c80fc8d1b97" ],
+    [ "readers", "dir_64b926904d848421d9a56912191be845.html", "dir_64b926904d848421d9a56912191be845" ],
+    [ "types", "dir_234c8fdbc21b20e8b899d3a5ebb4c8fd.html", "dir_234c8fdbc21b20e8b899d3a5ebb4c8fd" ],
+    [ "utilities", "dir_18a020a462f6505863a580817c3f96a6.html", "dir_18a020a462f6505863a580817c3f96a6" ],
+    [ "workspace", "dir_0ce769c73b4a263060548bb12867a1ee.html", "dir_0ce769c73b4a263060548bb12867a1ee" ],
+    [ "HaplotypeScorer.hpp", "_haplotype_scorer_8hpp_source.html", null ],
+    [ "KmerCompressionIndex.cc", "_kmer_compression_index_8cc_source.html", null ],
+    [ "KmerCompressionIndex.hpp", "_kmer_compression_index_8hpp_source.html", null ],
+    [ "PairedReadMapper.cc", "_paired_read_mapper_8cc_source.html", null ],
+    [ "PairedReadMapper.h", "_paired_read_mapper_8h_source.html", null ],
+    [ "Scaffolder.cc", "_scaffolder_8cc_source.html", null ],
+    [ "Scaffolder.hpp", "_scaffolder_8hpp_source.html", null ],
+    [ "SequenceGraph.hpp", "_sequence_graph_8hpp_source.html", null ],
+    [ "SequenceGraphJournal.cc", "_sequence_graph_journal_8cc_source.html", null ],
+    [ "SequenceGraphJournal.hpp", "_sequence_graph_journal_8hpp_source.html", null ],
+    [ "SequenceThreader.cpp", "_sequence_threader_8cpp_source.html", null ],
+    [ "SMR.h", "_s_m_r_8h_source.html", null ]
+];

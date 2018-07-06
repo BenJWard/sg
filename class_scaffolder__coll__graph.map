@@ -1,0 +1,15 @@
+<map id="Scaffolder" name="Scaffolder">
+<area shape="rect" id="node2" href="$class_kmer_compression_index.html" title="KmerCompressionIndex" alt="" coords="1445,181,1608,208"/>
+<area shape="rect" id="node4" href="$struct_kmer_count.html" title="KmerCount" alt="" coords="399,103,487,129"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="385,427,501,453"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="374,710,511,751"/>
+<area shape="rect" id="node7" href="$class_sequence_graph.html" title="Class representing sequence graphs. " alt="" coords="1160,829,1275,856"/>
+<area shape="rect" id="node22" href="$class_linked_read_mapper.html" title="A mapper for linked reads from a LinkedReadsDatastore. " alt="" coords="1459,408,1594,435"/>
+<area shape="rect" id="node28" href="$class_paired_read_mapper.html" title="A mapper for linked reads from a PairedReadsDatastore. " alt="" coords="1460,679,1593,705"/>
+<area shape="rect" id="node9" href="$structgraph_position.html" title="graphPosition" alt="" coords="392,964,493,991"/>
+<area shape="rect" id="node13" href="$class_node.html" title="Node" alt="" coords="416,651,469,677"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="184,867,264,893"/>
+<area shape="rect" id="node23" href="$class_linked_reads_datastore.html" title="LinkedReadsDatastore" alt="" coords="1140,485,1295,512"/>
+<area shape="rect" id="node29" href="$class_paired_reads_datastore.html" title="PairedReadsDatastore" alt="" coords="541,1075,696,1101"/>
+<area shape="rect" id="node15" title="STL class. " alt="" coords="6,859,133,901"/>
+</map>

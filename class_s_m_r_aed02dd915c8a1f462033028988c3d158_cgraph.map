@@ -1,0 +1,4 @@
+<map id="SMR::mapElementsToBatches" name="SMR::mapElementsToBatches">
+<area shape="rect" id="node2" href="$class_s_m_r.html#a401a36dc4d2eee116541c457495fa863" title="Collapses the _elements and writes the collapsed elements to the currentBatch file. " alt="" coords="257,5,383,32"/>
+<area shape="rect" id="node3" href="$class_s_m_r.html#a1bab388022206e5787ae709358bcb2ce" title="Sorts the _elements and then performs an inplace collapse of all equal elements using the merge funct..." alt="" coords="433,5,541,32"/>
+</map>

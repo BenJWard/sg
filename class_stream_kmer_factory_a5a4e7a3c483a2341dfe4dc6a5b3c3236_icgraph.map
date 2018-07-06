@@ -1,0 +1,4 @@
+<map id="StreamKmerFactory::produce_all_kmers" name="StreamKmerFactory::produce_all_kmers">
+<area shape="rect" id="node2" href="$class_linked_reads_datastore.html#a996948ab56ee59b7b41913cd6df19e5a" title="LinkedReadsDatastore\l::get_tags_kmers" alt="" coords="207,5,361,46"/>
+<area shape="rect" id="node3" href="$class_paired_read_mapper.html#a4ded1995b819be69abe05869ad24feb3" title="PairedReadMapper::map\l_reads" alt="" coords="201,70,367,111"/>
+</map>

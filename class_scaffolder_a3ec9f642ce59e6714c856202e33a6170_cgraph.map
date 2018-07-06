@@ -1,0 +1,5 @@
+<map id="Scaffolder::find_canonical_repeats" name="Scaffolder::find_canonical_repeats">
+<area shape="rect" id="node2" href="$class_sequence_graph.html#acd689762f765b68d335cfb841135ca9d" title="SequenceGraph::get\l_fw_links" alt="" coords="435,5,576,46"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#a8429832b3d8f54b51dc42e444f7e6191" title="SequenceGraph::get\l_bw_links" alt="" coords="236,34,377,75"/>
+<area shape="rect" id="node4" href="$class_scaffolder.html#aedd903d6e028bff3cbf62fe6e6060f94" title="Scaffolder::count_reads\l_linking" alt="" coords="227,99,387,141"/>
+</map>

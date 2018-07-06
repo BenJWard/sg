@@ -1,0 +1,5 @@
+<map id="SequenceGraph::get_flanking_nodes" name="SequenceGraph::get_flanking_nodes">
+<area shape="rect" id="node2" href="$class_sequence_graph.html#a7a7d44af8f8a84be93322f1ec36ea6c9" title="SequenceGraph::get\l_neighbour_nodes" alt="" coords="195,5,336,46"/>
+<area shape="rect" id="node3" href="$class_sequence_graph.html#afb224084f22dd2c43fea7bd0b49d20fd" title="SequenceGraph::get\l_fw_nodes" alt="" coords="573,59,715,101"/>
+<area shape="rect" id="node4" href="$class_sequence_graph.html#a29865f4c5ebddd97402de8815ac6006c" title="SequenceGraph::get\l_bw_nodes" alt="" coords="384,59,525,101"/>
+</map>
